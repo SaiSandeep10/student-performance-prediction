@@ -1,23 +1,32 @@
-# Student Performance Prediction System
+# 🎓 Student Performance Prediction System
 
-**Data Analytics & Visualization (DAV) Mini Project**
+> **Data Analytics & Visualization (DAV) Mini Project**
 
-A web-based machine learning application that predicts student academic performance (Low / Medium / High) using Decision Tree and Random Forest classifiers, served through a Flask web interface with interactive visualizations.
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://student-performance-prediction-5f385yovaugwbnyqtqp7f3.streamlit.app)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)](https://python.org)
+[![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.3%2B-orange?logo=scikit-learn)](https://scikit-learn.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
-## Problem Statement
+## 🚀 Live Demo
+
+**👉 [https://student-performance-prediction-5f385yovaugwbnyqtqp7f3.streamlit.app](https://student-performance-prediction-5f385yovaugwbnyqtqp7f3.streamlit.app)**
+
+---
+
+## 📌 Problem Statement
 
 Student academic performance depends on many interrelated factors including study habits, attendance, parental support, and extracurricular involvement. Traditional analysis methods are insufficient to model these complex relationships. This project builds a machine learning system that:
 
-- Analyzes a dataset of 2392 student records
+- Analyzes a dataset of **2392 student records**
 - Identifies patterns that correlate with academic outcomes
-- Predicts whether a student is likely to achieve Low, Medium, or High performance
-- Provides an interactive web interface for live prediction and visualization
+- Predicts whether a student is likely to achieve **Low**, **Medium**, or **High** performance
+- Provides an **interactive Streamlit web app** for live prediction and visualization
 
 ---
 
-## Objective
+## 🎯 Objective
 
 Develop a complete, working web-based Data Analytics and Visualization mini project that demonstrates:
 
@@ -27,17 +36,16 @@ Develop a complete, working web-based Data Analytics and Visualization mini proj
 | EDA | Distribution analysis, correlation, visual statistics |
 | Machine Learning | Decision Tree + Random Forest |
 | Model Evaluation | Accuracy, Precision, Recall, F1, Confusion Matrix |
-| Visualization | Chart.js interactive charts |
-| Web Application | Flask + HTML/CSS/JS |
+| Visualization | Plotly interactive charts |
+| Web Application | Streamlit (deployed on Streamlit Cloud) |
 
 ---
 
-## Dataset
+## 📊 Dataset
 
 **File:** `data/student_performance.csv`  
 **Source:** Student Performance Factors Dataset  
-**Records:** 2392 students  
-**Features:** 15 columns
+**Records:** 2392 students | **Features:** 15 columns
 
 | Column | Description | Values |
 |---|---|---|
@@ -45,7 +53,7 @@ Develop a complete, working web-based Data Analytics and Visualization mini proj
 | Age | Student age | 15–18 |
 | Gender | Gender (encoded) | 0=Male, 1=Female |
 | Ethnicity | Ethnicity group | 0–3 |
-| ParentalEducation | Parents' highest education | 0=None, 1=HS, 2=College, 3=Bachelor's, 4=Higher |
+| ParentalEducation | Parents' highest education | 0=None … 4=Higher |
 | StudyTimeWeekly | Hours studied per week | 0–40 (float) |
 | Absences | Number of school absences | 0–30 |
 | Tutoring | Receives tutoring | 0=No, 1=Yes |
@@ -55,64 +63,63 @@ Develop a complete, working web-based Data Analytics and Visualization mini proj
 | Music | Participates in music | 0=No, 1=Yes |
 | Volunteering | Does volunteering | 0=No, 1=Yes |
 | GPA | Grade Point Average | 0.0–4.0 |
-| GradeClass | Letter grade class | 0=A, 1=B, 2=C, 3=D, 4=F |
+| GradeClass | Letter grade class | 0=A … 4=F |
 
 ---
 
-## Target Variable: Performance_Level
+## 🎯 Target Variable: Performance_Level
 
 Created from **GPA** using threshold-based classification:
 
 | Performance Level | GPA Range | Interpretation |
 |---|---|---|
-| **Low** | GPA < 1.5 | D/F range — struggling student |
-| **Medium** | 1.5 ≤ GPA < 3.0 | C/B range — average student |
-| **High** | GPA ≥ 3.0 | A/B+ range — high achiever |
+| 🔴 **Low** | GPA < 1.5 | D/F range — struggling student |
+| 🟡 **Medium** | 1.5 ≤ GPA < 3.0 | C/B range — average student |
+| 🟢 **High** | GPA ≥ 3.0 | A/B+ range — high achiever |
 
 > **Note:** GPA and GradeClass are **excluded** from features to prevent data leakage.
 
 ---
 
-## Features Used for Prediction
+## 🔬 Features Used for Prediction
 
 ```
 Age, Gender, Ethnicity, ParentalEducation,
 StudyTimeWeekly, Absences, Tutoring, ParentalSupport,
 Extracurricular, Sports, Music, Volunteering
 ```
-
 Total: **12 features**
 
 ---
 
-## Machine Learning Algorithms
+## 🤖 Machine Learning Algorithms
 
 ### 1. Decision Tree Classifier
 - **Why?** Interpretable, visualizable, no data distribution assumptions
-- **Parameters:** max_depth=10, min_samples_split=10, class_weight='balanced'
+- **Parameters:** `max_depth=10`, `min_samples_split=10`, `class_weight='balanced'`
 - **Pipeline:** StandardScaler → DecisionTreeClassifier
 
 ### 2. Random Forest Classifier
 - **Why?** Ensemble reduces overfitting, provides feature importance, robust to noise
-- **Parameters:** n_estimators=200, max_depth=12, class_weight='balanced'
+- **Parameters:** `n_estimators=200`, `max_depth=12`, `class_weight='balanced'`
 - **Pipeline:** StandardScaler → RandomForestClassifier
 
 ---
 
-## Technology Stack
+## 🛠️ Technology Stack
 
 | Layer | Technology |
 |---|---|
-| Backend | Python 3.x, Flask |
+| Web App | Python 3.x, Streamlit |
 | Machine Learning | Scikit-learn, Pandas, NumPy |
-| Frontend | HTML5, CSS3, JavaScript |
-| Visualizations | Chart.js 4.x |
+| Visualizations | Plotly |
 | Fonts | Google Fonts (Inter) |
+| Deployment | Streamlit Cloud |
 | Model Storage | Pickle (.pkl files) |
 
 ---
 
-## Data Preprocessing
+## 📐 Data Preprocessing
 
 1. **Load** CSV from `data/student_performance.csv`
 2. **Remove duplicates** — checked and cleaned
@@ -124,54 +131,12 @@ Total: **12 features**
 
 ---
 
-## Model Training
-
-Run once:
-```bash
-python train_models.py
-```
-
-This generates:
-- `models/decision_tree.pkl` — Trained DT pipeline
-- `models/random_forest.pkl` — Trained RF pipeline
-- `models/feature_columns.pkl` — Ordered feature list
-- `models/metrics.json` — All evaluation metrics + visualization data
-
----
-
-## Evaluation Metrics
-
-| Metric | Formula | Meaning |
-|---|---|---|
-| Accuracy | (TP+TN)/(total) | Overall correct predictions |
-| Precision | TP/(TP+FP) | Of predicted positives, how many are correct |
-| Recall | TP/(TP+FN) | Of actual positives, how many were found |
-| F1 Score | 2*(P*R)/(P+R) | Harmonic mean of Precision and Recall |
-| Confusion Matrix | Grid of actual vs predicted | Per-class breakdown |
-
----
-
-## Web Application Features
-
-| Feature | Description |
-|---|---|
-| Dashboard | Project stats, model accuracy, performance distribution |
-| Prediction Form | 12-field input form for student details |
-| Decision Tree Prediction | Live prediction via `/predict/decision-tree` |
-| Random Forest Prediction | Live prediction via `/predict/random-forest` |
-| Probability Display | Confidence % and per-class probabilities |
-| Analytics Dashboard | 8+ interactive Chart.js visualizations |
-| Model Comparison | Table + Radar chart comparing both algorithms |
-| Responsive Design | Works on desktop, tablet, and mobile |
-
----
-
-## Project Structure
+## 📂 Project Structure
 
 ```
 student-performance-prediction/
 │
-├── app.py                     # Flask backend (routes + prediction)
+├── streamlit_app.py           # ⭐ Main Streamlit app (3 pages)
 ├── train_models.py            # ML training script
 ├── requirements.txt           # Python dependencies
 ├── README.md
@@ -185,90 +150,69 @@ student-performance-prediction/
 │   ├── feature_columns.pkl    # Feature list
 │   └── metrics.json           # Evaluation results + chart data
 │
-├── templates/
-│   ├── index.html             # Dashboard
-│   ├── prediction.html        # Prediction form
-│   └── analytics.html        # Visualization dashboard
-│
-├── static/
-│   ├── css/style.css
-│   └── js/
-│       ├── script.js          # Shared utilities
-│       └── analytics.js       # Chart.js visualizations
-│
-└── screenshots/
+└── .streamlit/
+    └── config.toml            # Dark purple theme config
 ```
 
 ---
 
-## Installation & Running
+## ⚙️ Installation & Running Locally
 
 ### Prerequisites
 - Python 3.8+
 - pip
 
-### Step 1 — Install dependencies
+### Step 1 — Clone the repository
+```bash
+git clone https://github.com/SaiSandeep10/student-performance-prediction.git
+cd student-performance-prediction
+```
+
+### Step 2 — Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 2 — Train the models (do this once)
+### Step 3 — (Optional) Retrain the models
 ```bash
 python train_models.py
 ```
 
-### Step 3 — Launch the web application
+### Step 4 — Launch the Streamlit app
 ```bash
-python app.py
+streamlit run streamlit_app.py
 ```
 
-### Step 4 — Open in browser
+### Step 5 — Open in browser
 ```
-http://127.0.0.1:5000
+http://localhost:8501
 ```
 
 ---
 
-## API Endpoints
+## 📱 App Pages
 
-| Method | Endpoint | Description |
+| Page | Description |
+|---|---|
+| 🏠 **Dashboard** | Hero section, 4 metric cards, model comparison table, radar chart, performance pie chart |
+| 🔮 **Prediction** | Algorithm selector, 12-field student form, probability bar chart, smart insights |
+| 📊 **Analytics** | Feature importance, confusion matrices, study time box plots, scatter plot, correlation heatmap, GPA distribution |
+
+---
+
+## 📈 Evaluation Metrics
+
+| Metric | Formula | Meaning |
 |---|---|---|
-| GET | `/` | Dashboard |
-| GET | `/prediction` | Prediction form |
-| GET | `/analytics` | Analytics dashboard |
-| GET | `/model-metrics` | JSON: all metrics + chart data |
-| POST | `/predict/decision-tree` | DT prediction (JSON) |
-| POST | `/predict/random-forest` | RF prediction (JSON) |
-
-**Prediction Request (JSON):**
-```json
-{
-  "Age": 17, "Gender": 0, "Ethnicity": 1,
-  "ParentalEducation": 2, "StudyTimeWeekly": 15.5,
-  "Absences": 3, "Tutoring": 1, "ParentalSupport": 3,
-  "Extracurricular": 1, "Sports": 0, "Music": 1, "Volunteering": 0
-}
-```
-
-**Prediction Response (JSON):**
-```json
-{
-  "prediction": "High",
-  "probability": 0.84,
-  "probabilities": {"Low": 0.03, "Medium": 0.13, "High": 0.84},
-  "algorithm": "Random Forest"
-}
-```
+| Accuracy | (TP+TN)/total | Overall correct predictions |
+| Precision | TP/(TP+FP) | Of predicted positives, how many are correct |
+| Recall | TP/(TP+FN) | Of actual positives, how many were found |
+| F1 Score | 2·(P·R)/(P+R) | Harmonic mean of Precision and Recall |
+| Confusion Matrix | Grid of actual vs predicted | Per-class breakdown |
 
 ---
 
-## Screenshots
-
-*(Add screenshots to the `screenshots/` folder after running the app)*
-
----
-
-## Future Enhancements
+## 🔮 Future Enhancements
 
 1. Add more ML algorithms (SVM, KNN, Gradient Boosting)
 2. Hyperparameter tuning with GridSearchCV
@@ -281,6 +225,6 @@ http://127.0.0.1:5000
 
 ---
 
-## Academic Note
+## 📝 Academic Note
 
-This project was developed as a Data Analytics & Visualization (DAV) laboratory mini project demonstrating the complete ML workflow from raw data to a working web application.
+This project was developed as a **Data Analytics & Visualization (DAV) laboratory mini project** demonstrating the complete ML workflow from raw data to a deployed web application.

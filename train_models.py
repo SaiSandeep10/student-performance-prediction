@@ -287,5 +287,5 @@ with open("models/metrics.json", "w") as f:
 print("\n[10] Metrics saved to models/metrics.json")
 print("\n" + "=" * 60)
 print("TRAINING COMPLETE - Application is ready to launch!")
-print("    Run:  python app.py")
+print("    Run:  streamlit run streamlit_app.py")
 print("=" * 60)
