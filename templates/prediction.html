@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Prediction | Student Performance Prediction System</title>
+  <meta name="description" content="Enter student details to predict academic performance using Decision Tree and Random Forest ML models."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <div class="nav-icon">&#127891;</div>
+    <span>StudentPredict <span class="nav-badge">DAV</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Dashboard</a></li>
+    <li><a href="/prediction" class="active">Predict</a></li>
+    <li><a href="/analytics">Analytics</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle">&#9776;</div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1>&#128270; Student Performance Prediction</h1>
+    <p>Enter student details below and use either algorithm to predict the performance level.</p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<section class="section">
+  <div class="container">
+    <div class="pred-layout">
+
+      <!-- FORM -->
+      <div class="pred-form-wrap">
+        <div class="card">
+          <div class="card-header">
+            <h2>&#128203; Student Information</h2>
+            <p>Fill in the details accurately for best prediction results</p>
+          </div>
+          <form id="predForm" class="pred-form" novalidate>
+
+            <!-- Row 1 -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="Age">Age <span class="req">*</span></label>
+                <select id="Age" name="Age" required>
+                  <option value="">Select Age</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                </select>
+                <span class="field-hint">Range: 15 – 18 years</span>
+              </div>
+              <div class="form-group">
+                <label for="Gender">Gender <span class="req">*</span></label>
+                <select id="Gender" name="Gender" required>
+                  <option value="">Select Gender</option>
+                  <option value="0">Male (0)</option>
+                  <option value="1">Female (1)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="Ethnicity">Ethnicity <span class="req">*</span></label>
+                <select id="Ethnicity" name="Ethnicity" required>
+                  <option value="">Select</option>
+                  <option value="0">Caucasian (0)</option>
+                  <option value="1">African American (1)</option>
+                  <option value="2">Asian (2)</option>
+                  <option value="3">Other (3)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="ParentalEducation">Parental Education <span class="req">*</span></label>
+                <select id="ParentalEducation" name="ParentalEducation" required>
+                  <option value="">Select</option>
+                  <option value="0">None (0)</option>
+                  <option value="1">High School (1)</option>
+                  <option value="2">Some College (2)</option>
+                  <option value="3">Bachelor's (3)</option>
+                  <option value="4">Higher (4)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="StudyTimeWeekly">Study Time Weekly (hrs) <span class="req">*</span></label>
+                <input type="number" id="StudyTimeWeekly" name="StudyTimeWeekly"
+                       min="0" max="40" step="0.1" placeholder="e.g. 15.5" required/>
+                <span class="field-hint">Hours per week (0 – 40)</span>
+              </div>
+              <div class="form-group">
+                <label for="Absences">Absences <span class="req">*</span></label>
+                <input type="number" id="Absences" name="Absences"
+                       min="0" max="30" step="1" placeholder="e.g. 5" required/>
+                <span class="field-hint">Number of school absences (0 – 30)</span>
+              </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="Tutoring">Tutoring <span class="req">*</span></label>
+                <select id="Tutoring" name="Tutoring" required>
+                  <option value="">Select</option>
+                  <option value="0">No (0)</option>
+                  <option value="1">Yes (1)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="ParentalSupport">Parental Support <span class="req">*</span></label>
+                <select id="ParentalSupport" name="ParentalSupport" required>
+                  <option value="">Select</option>
+                  <option value="0">None (0)</option>
+                  <option value="1">Low (1)</option>
+                  <option value="2">Moderate (2)</option>
+                  <option value="3">High (3)</option>
+                  <option value="4">Very High (4)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 5: Activities -->
+            <div class="form-section-label">Extracurricular Activities</div>
+            <div class="form-row form-row-4">
+              <div class="form-group">
+                <label for="Extracurricular">Extracurricular</label>
+                <select id="Extracurricular" name="Extracurricular" required>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="Sports">Sports</label>
+                <select id="Sports" name="Sports" required>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="Music">Music</label>
+                <select id="Music" name="Music" required>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="Volunteering">Volunteering</label>
+                <select id="Volunteering" name="Volunteering" required>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Error message -->
+            <div id="formError" class="form-error" style="display:none;"></div>
+
+            <!-- Action Buttons -->
+            <div class="pred-buttons">
+              <button type="button" id="btnDT" class="btn btn-decision-tree" onclick="predict('decision-tree')">
+                <span class="btn-icon">&#127795;</span>
+                <span class="btn-text">
+                  <strong>Predict with Decision Tree</strong>
+                  <small>Single tree classifier</small>
+                </span>
+                <span class="btn-loader" id="loaderDT" style="display:none;">&#9696;</span>
+              </button>
+              <button type="button" id="btnRF" class="btn btn-random-forest" onclick="predict('random-forest')">
+                <span class="btn-icon">&#127807;</span>
+                <span class="btn-text">
+                  <strong>Predict with Random Forest</strong>
+                  <small>Ensemble of 200 trees</small>
+                </span>
+                <span class="btn-loader" id="loaderRF" style="display:none;">&#9696;</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- RESULTS PANEL -->
+      <div class="pred-results-wrap">
+        <!-- DT Result -->
+        <div class="result-card result-dt" id="resultDT" style="display:none;">
+          <div class="result-header">
+            <div class="result-algo-icon">&#127795;</div>
+            <div>
+              <div class="result-algo-name">Decision Tree</div>
+              <div class="result-algo-sub">Classification Result</div>
+            </div>
+          </div>
+          <div class="result-prediction" id="dtPredLabel">—</div>
+          <div class="result-badge" id="dtPredBadge"></div>
+          <div class="result-prob-label">Confidence</div>
+          <div class="result-prob-bar-wrap">
+            <div class="result-prob-bar" id="dtProbBar" style="width:0%"></div>
+          </div>
+          <div class="result-prob-val" id="dtProbVal">—</div>
+          <div class="result-breakdown" id="dtBreakdown"></div>
+        </div>
+
+        <!-- RF Result -->
+        <div class="result-card result-rf" id="resultRF" style="display:none;">
+          <div class="result-header">
+            <div class="result-algo-icon">&#127807;</div>
+            <div>
+              <div class="result-algo-name">Random Forest</div>
+              <div class="result-algo-sub">Classification Result</div>
+            </div>
+          </div>
+          <div class="result-prediction" id="rfPredLabel">—</div>
+          <div class="result-badge" id="rfPredBadge"></div>
+          <div class="result-prob-label">Confidence</div>
+          <div class="result-prob-bar-wrap">
+            <div class="result-prob-bar" id="rfProbBar" style="width:0%"></div>
+          </div>
+          <div class="result-prob-val" id="rfProbVal">—</div>
+          <div class="result-breakdown" id="rfBreakdown"></div>
+        </div>
+
+        <!-- Placeholder when no results yet -->
+        <div class="result-placeholder" id="resultPlaceholder">
+          <div class="placeholder-icon">&#128270;</div>
+          <p>Fill in the student details and click a prediction button to see the result here.</p>
+        </div>
+
+        <!-- Info card -->
+        <div class="info-card">
+          <h4>&#128161; How Predictions Work</h4>
+          <ul>
+            <li>Data is sent to a pre-trained ML pipeline.</li>
+            <li>Features are scaled using the same StandardScaler used during training.</li>
+            <li>The classifier outputs a class &amp; probability.</li>
+            <li>Performance Levels: <span class="badge-low">Low</span> GPA &lt;1.5 &nbsp; <span class="badge-med">Medium</span> 1.5–3.0 &nbsp; <span class="badge-high">High</span> ≥3.0</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /.pred-layout -->
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>&#127891; Student Performance Prediction System &mdash; DAV Mini Project</p>
+    <p class="footer-sub">Built with Flask &bull; Scikit-learn &bull; Chart.js &bull; Python</p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script>
+async function predict(algo) {
+  const form = document.getElementById('predForm');
+  const errDiv = document.getElementById('formError');
+  errDiv.style.display = 'none';
+
+  // Collect fields
+  const fields = ['Age','Gender','Ethnicity','ParentalEducation','StudyTimeWeekly',
+                  'Absences','Tutoring','ParentalSupport','Extracurricular','Sports','Music','Volunteering'];
+  const payload = {};
+  let valid = true;
+  for (const f of fields) {
+    const el = document.getElementById(f);
+    const val = el.value.trim();
+    if (val === '') {
+      errDiv.textContent = `Please fill in: ${f.replace(/([A-Z])/g,' $1').trim()}`;
+      errDiv.style.display = 'block';
+      el.focus();
+      valid = false;
+      break;
+    }
+    payload[f] = val;
+  }
+  if (!valid) return;
+
+  const btnId = algo === 'decision-tree' ? 'btnDT' : 'btnRF';
+  const loaderId = algo === 'decision-tree' ? 'loaderDT' : 'loaderRF';
+  const btn = document.getElementById(btnId);
+  btn.disabled = true;
+  document.getElementById(loaderId).style.display = 'inline';
+
+  try {
+    const res = await fetch(`/predict/${algo}`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (data.error) {
+      errDiv.textContent = data.error;
+      errDiv.style.display = 'block';
+      return;
+    }
+
+    document.getElementById('resultPlaceholder').style.display = 'none';
+
+    const prefix = algo === 'decision-tree' ? 'dt' : 'rf';
+    const resultCard = document.getElementById('result' + (algo === 'decision-tree' ? 'DT' : 'RF'));
+    resultCard.style.display = 'block';
+
+    const levelColors = {Low:'#ef4444', Medium:'#f59e0b', High:'#22c55e'};
+    const levelEmoji  = {Low:'&#128997;', Medium:'&#128993;', High:'&#128994;'};
+
+    document.getElementById(prefix+'PredLabel').innerHTML = levelEmoji[data.prediction] + ' ' + data.prediction + ' Performance';
+    const badge = document.getElementById(prefix+'PredBadge');
+    badge.textContent = data.prediction;
+    badge.className = 'result-badge badge-' + data.prediction.toLowerCase();
+
+    const pct = Math.round(data.probability * 100);
+    const bar = document.getElementById(prefix+'ProbBar');
+    bar.style.background = levelColors[data.prediction];
+    setTimeout(() => { bar.style.width = pct + '%'; }, 50);
+    document.getElementById(prefix+'ProbVal').textContent = pct + '% confidence';
+
+    // Breakdown
+    if (data.probabilities) {
+      let html = '<div class="breakdown-title">Class Probabilities</div><div class="breakdown-bars">';
+      for (const [cls, prob] of Object.entries(data.probabilities)) {
+        const p = Math.round(prob * 100);
+        html += `<div class="bb-row">
+          <span class="bb-label">${cls}</span>
+          <div class="bb-bar-wrap"><div class="bb-bar" style="width:${p}%;background:${levelColors[cls]}"></div></div>
+          <span class="bb-val">${p}%</span>
+        </div>`;
+      }
+      html += '</div>';
+      document.getElementById(prefix+'Breakdown').innerHTML = html;
+    }
+
+    resultCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+  } catch(e) {
+    errDiv.textContent = 'Network error. Ensure the Flask server is running.';
+    errDiv.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    document.getElementById(loaderId).style.display = 'none';
+  }
+}
+</script>
+</body>
+</html>

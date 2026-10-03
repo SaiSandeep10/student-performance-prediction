@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analytics Dashboard | Student Performance Prediction System</title>
+  <meta name="description" content="Data analytics and visualization dashboard for student performance data including study hours, absences, GPA distribution, confusion matrices, and feature importance."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <div class="nav-icon">&#127891;</div>
+    <span>StudentPredict <span class="nav-badge">DAV</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Dashboard</a></li>
+    <li><a href="/prediction">Predict</a></li>
+    <li><a href="/analytics" class="active">Analytics</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle">&#9776;</div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1>&#128200; Data Analytics &amp; Visualization</h1>
+    <p>Exploratory Data Analysis, model evaluation charts, and feature importance derived from actual dataset and trained models.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <!-- ROW 1: Performance Distribution + Accuracy Comparison -->
+    <div class="chart-grid chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#127941;</div>
+          <div>
+            <h3>Performance Level Distribution</h3>
+            <p>How students are classified across Low / Medium / High</p>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-md">
+          <canvas id="chartPerformanceDist"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#128202;</div>
+          <div>
+            <h3>Algorithm Accuracy Comparison</h3>
+            <p>Decision Tree vs Random Forest on the test set</p>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-md">
+          <canvas id="chartAccuracyComp"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: Study Hours vs Performance (Box) + Absences vs Performance (Bar) -->
+    <div class="chart-grid chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#128218;</div>
+          <div>
+            <h3>Study Hours vs Performance</h3>
+            <p>Average weekly study hours grouped by performance level</p>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-md">
+          <canvas id="chartStudyHours"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#128197;</div>
+          <div>
+            <h3>Absences vs Performance</h3>
+            <p>Average number of absences per performance level</p>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-md">
+          <canvas id="chartAbsences"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 3: Scatter Study Time vs GPA -->
+    <div class="chart-grid chart-grid-1">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#128307;</div>
+          <div>
+            <h3>Study Time vs GPA — Scatter Plot</h3>
+            <p>Relationship between weekly study hours and GPA for a sample of 300 students, colored by performance level</p>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-lg">
+          <canvas id="chartScatter"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 4: Feature Importance -->
+    <div class="chart-grid chart-grid-1">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#11088;</div>
+          <div>
+            <h3>Feature Importance — Random Forest</h3>
+            <p>Which features contribute most to the prediction (Gini impurity reduction)</p>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-md">
+          <canvas id="chartFeatureImportance"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 5: Confusion Matrices -->
+    <div class="chart-grid chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#127795;</div>
+          <div>
+            <h3>Confusion Matrix — Decision Tree</h3>
+            <p>Actual vs Predicted on test set (rows=actual, cols=predicted)</p>
+          </div>
+        </div>
+        <div class="cm-wrap" id="cmDT"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <div class="chart-icon">&#127807;</div>
+          <div>
+            <h3>Confusion Matrix — Random Forest</h3>
+            <p>Actual vs Predicted on test set (rows=actual, cols=predicted)</p>
+          </div>
+        </div>
+        <div class="cm-wrap" id="cmRF"></div>
+      </div>
+    </div>
+
+    <!-- ROW 6: Model Comparison Table -->
+    <div class="chart-card" style="margin-bottom: 2rem;">
+      <div class="chart-card-header">
+        <div class="chart-icon">&#128203;</div>
+        <div>
+          <h3>Model Performance Comparison</h3>
+          <p>Evaluation metrics on the 20% held-out test set</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="metrics-table" id="metricsTable">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>&#127795; Decision Tree</th>
+              <th>&#127807; Random Forest</th>
+              <th>Difference</th>
+            </tr>
+          </thead>
+          <tbody id="metricsTableBody">
+            <tr><td colspan="4" class="table-loading">Loading metrics…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap chart-wrap-md" style="margin-top:1.5rem;">
+        <canvas id="chartMetricsComp"></canvas>
+      </div>
+      <div class="model-observation" id="modelObservation"></div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>&#127891; Student Performance Prediction System &mdash; DAV Mini Project</p>
+    <p class="footer-sub">Built with Flask &bull; Scikit-learn &bull; Chart.js &bull; Python</p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+</body>
+</html>
